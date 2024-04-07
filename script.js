@@ -1,4 +1,3 @@
-console.log("he");
 
 //! on crée un tableau de question
 
@@ -82,13 +81,16 @@ function afficherQuestion() {
  const form = document.createElement('form');
  form.id ='quizform';
 
- currentQuestion.options.forEach((option) => {
+ currentQuestion.options.forEach((option,index) => {
   const input = document.createElement('input');
   input.type='radio';
   input.name='answer';
+  input.id='radioBtn' + index;
 
   const label = document.createElement('label');
+  label.htmlFor = input.id;
   label.textContent = option;
+  
 
   form.appendChild(input);
   form.appendChild(label)
@@ -97,33 +99,41 @@ function afficherQuestion() {
  const submitButton = document.createElement('input');
  submitButton.type ='submit';
  submitButton.value ='valider'
+ submitButton.id='valider'
 
 
  form.appendChild(submitButton);
-
  cardDiv.appendChild(questionParagraphe);
  cardDiv.appendChild(form)
 
 
- document.getElementById('quizForm').addEventListener('submit',function (event) {
-  event.preventDefault();
- })
+ submitButton.addEventListener('submit', (event) => {
+ event.preventDefault();
+
+ let answerSelected = document.querySelector('input[type="radio"]:checked');
+
+
+ if (answerSelected) {
+ 
+ if ( answerSelected.value == currentQuestion.answer) {
+ 
+  alert("bonne réponse!");
+  score++;
+} else {
+  alert(`Mauvaise réponse! La bonne réponse est: ${currentQuestion.answer}`);
+}
+
+//verifie si il reste des questions
+if (questions.length > 0) {
+  afficherQuestion();
+} else {
+  finDePartie();
+}
+ }})}
 
   //on vérifie la reponse de l'utilisateur
-  if (reponseUtilisateur == currentQuestion.answer) {
-    alert("bonne réponse!");
-    score++;
-  } else {
-    alert(`Mauvaise réponse! La bonne réponse est: ${currentQuestion.answer}`);
-  }
 
-  //verifie si il reste des questions
-  if (questions.length > 0) {
-    afficherQuestion();
-  } else {
-    finDePartie();
-  }
-}
+
 
 //fonction pour géré la fin de partie
 function finDePartie() {
@@ -140,7 +150,7 @@ button.innerHTML = "Commencer le jeu";
 startButton.appendChild(button);
 
 
-//création du boutoj pour recharger le jeu 
+//création du bouton pour recharger le jeu 
 
 let reloadButton = document.getElementById("reload")
 reloadButton.addEventListener("click",() => {
