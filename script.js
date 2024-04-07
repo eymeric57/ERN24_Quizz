@@ -96,10 +96,12 @@ function afficherQuestion() {
   form.appendChild(label)
  });
 
- const submitButton = document.createElement('input');
+ const submitButton = document.createElement('button');
  submitButton.type ='submit';
- submitButton.value ='valider'
- submitButton.id='valider'
+ submitButton.value ='valider';
+ submitButton.innerHTML = "valider"
+ submitButton.id ="subBtn"
+ 
 
 
  form.appendChild(submitButton);
@@ -107,31 +109,35 @@ function afficherQuestion() {
  cardDiv.appendChild(form)
 
 
- submitButton.addEventListener('submit', (event) => {
+ form.addEventListener('submit', (event) => {
  event.preventDefault();
 
- let answerSelected = document.querySelector('input[type="radio"]:checked');
+ const selectedAnswer = document.querySelector('input:checked');
 
 
- if (answerSelected) {
- 
- if ( answerSelected.value == currentQuestion.answer) {
- 
-  alert("bonne réponse!");
-  score++;
-} else {
-  alert(`Mauvaise réponse! La bonne réponse est: ${currentQuestion.answer}`);
-}
+    if (selectedAnswer) {
+      const label1 = selectedAnswer.nextElementSibling;
+      const value = label1.textContent;
+      console.log(value);
+      if (value == currentQuestion.answer) {
+        score++; // Incrémente le score si la réponse est correcte
+        console.log('gg');
+        cardDiv.removeChild(questionParagraphe);
+        cardDiv.removeChild(form);
+        afficherQuestion()
+      } if (value !== currentQuestion.answer) {
 
-//verifie si il reste des questions
-if (questions.length > 0) {
-  afficherQuestion();
-} else {
-  finDePartie();
-}
- }})}
+       alert('mauvaise reponse !')
 
-  //on vérifie la reponse de l'utilisateur
+      }
+      
+    } else {
+      alert('Veuillez sélectionner une réponse.');
+    }
+   
+ })}
+
+
 
 
 
@@ -161,3 +167,7 @@ reloadButton.addEventListener("click",() => {
 let button2 = document.createElement("button");
 button2.innerHTML = "rejouer"
 reloadButton.appendChild(button2)
+
+
+
+
