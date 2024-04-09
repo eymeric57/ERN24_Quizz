@@ -1,4 +1,3 @@
-
 //! on crée un tableau de question
 
 const questions = [
@@ -73,47 +72,43 @@ function afficherQuestion() {
   //!obtenir et sup la premiere question du tableau
   const currentQuestion = questions.shift();
   //!on affiche la question et les options de réponses
- const cardDiv = document.getElementById('card');
+  const cardDiv = document.getElementById("card");
 
- const questionParagraphe = document.createElement('p');
- questionParagraphe.textContent=currentQuestion.questions;
+  const questionParagraphe = document.createElement("p");
+  questionParagraphe.textContent = currentQuestion.questions;
 
- const form = document.createElement('form');
- form.id ='quizform';
+  const form = document.createElement("form");
+  form.id = "quizform";
 
- currentQuestion.options.forEach((option,index) => {
-  const input = document.createElement('input');
-  input.type='radio';
-  input.name='answer';
-  input.id='radioBtn' + index;
+  currentQuestion.options.forEach((option, index) => {
+    const input = document.createElement("input");
+    input.type = "radio";
+    input.name = "answer";
+    input.className = "radio-custom";
+    input.id = "radioBtn" + index;
 
-  const label = document.createElement('label');
-  label.htmlFor = input.id;
-  label.textContent = option;
-  
+    const label = document.createElement("label");
+    label.htmlFor = input.id;
+    label.textContent = option;
 
-  form.appendChild(input);
-  form.appendChild(label)
- });
+    form.appendChild(input);
+    form.appendChild(label);
+  });
 
- const submitButton = document.createElement('button');
- submitButton.type ='submit';
- submitButton.value ='valider';
- submitButton.innerHTML = "valider"
- submitButton.id ="subBtn"
- 
+  const submitButton = document.createElement("button");
+  submitButton.type = "submit";
+  submitButton.value = "valider";
+  submitButton.innerHTML = "valider";
+  submitButton.id = "subBtn";
 
+  form.appendChild(submitButton);
+  cardDiv.appendChild(questionParagraphe);
+  cardDiv.appendChild(form);
 
- form.appendChild(submitButton);
- cardDiv.appendChild(questionParagraphe);
- cardDiv.appendChild(form)
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-
- form.addEventListener('submit', (event) => {
- event.preventDefault();
-
- const selectedAnswer = document.querySelector('input:checked');
-
+    const selectedAnswer = document.querySelector("input:checked");
 
     if (selectedAnswer) {
       const label1 = selectedAnswer.nextElementSibling;
@@ -121,25 +116,21 @@ function afficherQuestion() {
       console.log(value);
       if (value == currentQuestion.answer) {
         score++; // Incrémente le score si la réponse est correcte
-        console.log('gg');
+        console.log("gg");
         cardDiv.removeChild(questionParagraphe);
         cardDiv.removeChild(form);
-        afficherQuestion()
-      } if (value !== currentQuestion.answer) {
-
-       alert('mauvaise reponse !')
-
+        afficherQuestion();
+        score++;
       }
-      
+      if (value !== currentQuestion.answer) {
+        cardDiv.innerHTML = "";
+        afficherQuestion();
+      }
     } else {
-      alert('Veuillez sélectionner une réponse.');
+      alert("Veuillez sélectionner une réponse.");
     }
-   
- })}
-
-
-
-
+  });
+}
 
 //fonction pour géré la fin de partie
 function finDePartie() {
@@ -155,19 +146,13 @@ let button = document.createElement("button");
 button.innerHTML = "Commencer le jeu";
 startButton.appendChild(button);
 
+//création du bouton pour recharger le jeu
 
-//création du bouton pour recharger le jeu 
-
-let reloadButton = document.getElementById("reload")
-reloadButton.addEventListener("click",() => {
-  location.reload()
-
-})
+let reloadButton = document.getElementById("reload");
+reloadButton.addEventListener("click", () => {
+  location.reload();
+});
 
 let button2 = document.createElement("button");
-button2.innerHTML = "rejouer"
-reloadButton.appendChild(button2)
-
-
-
-
+button2.innerHTML = "rejouer";
+reloadButton.appendChild(button2);
